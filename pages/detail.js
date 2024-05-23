@@ -121,7 +121,7 @@ export default function Home() {
             <div className="space-y-2">
               <p className="font-semibold text-lg">Ringkasan CV</p>
               <embed
-                src="/cv.pdf"
+                src="/cv_fay.pdf"
                 type="application/pdf"
                 className="w-full h-screen"
               />
