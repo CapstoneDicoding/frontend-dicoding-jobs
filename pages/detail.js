@@ -1,31 +1,17 @@
 "use client";
 import Image from "next/image";
 import { Quicksand } from "@next/font/google";
+import Navbar from "@/components/navbar";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
   weight: ["300", "500"],
 });
 
-export default function Home() {
+export default function Detail() {
   return (
     <main className="bg-white">
-      <nav
-        className={`drop-shadow-lg bg-white ${quicksand.className} text-mainColor fixed top-0 left-0 right-0 z-50`}
-      >
-        <div className="flex justify-between mx-10">
-          <div className="flex items-center my-3 space-x-4">
-            <Image src="/logo.png" alt="logo" width={70} height={0} />
-            <Image src="/line1.png" alt="line1" width={3} height={0} />
-            <p>Lowongan Kerja</p>
-          </div>
-          <div className="flex items-center space-x-10">
-            <p>Dashboard</p>
-            <Image src="/profil.png" alt="icon-profil" width={30} height={0} />
-          </div>
-        </div>
-      </nav>
-
+      <Navbar />
       <section className={`grid grid-cols-[30%_70%] ${quicksand.className}`}>
         <div className="bg-mainColor text-white space-y-4 max-h-dvh sticky top-0 pt-[56px]">
           <div className="flex items-center mx-10 my-3 space-x-4">
