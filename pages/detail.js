@@ -108,7 +108,7 @@ export default function Detail() {
             <div className="space-y-2">
               <p className="font-semibold text-lg">Ringkasan CV</p>
               <embed
-                src="/cv_fay.pdf"
+                src="/cv.pdf"
                 type="application/pdf"
                 className="w-full h-screen"
               />
