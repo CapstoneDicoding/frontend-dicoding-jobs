@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { Quicksand } from "@next/font/google";
 import Navbar from "@/components/navbar";
+import Link from 'next/link';
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -14,12 +15,12 @@ export default function Detail() {
       <Navbar />
       <section className={`grid grid-cols-[30%_70%] ${quicksand.className}`}>
         <div className="bg-mainColor text-white space-y-4 max-h-dvh sticky top-0 pt-[56px]">
-          <div className="flex items-center mx-10 my-3 space-x-4">
+          <Link href="/rank-kandidat" className="flex items-center mx-10 my-3 space-x-4">
             <button>
               <Image src="/back_icon.png" alt="back" width={9} height={0} />
             </button>
             <p className="text-lg">Kembali</p>
-          </div>
+          </Link>
           <div className="mx-10 flex flex-col items-center space-y-5">
             <p className=" text-lg">Profil Pelamar</p>
             <div className="w-32 h-32 overflow-hidden rounded-full border-2 border-gray-300 relative">

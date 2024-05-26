@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { Quicksand } from "@next/font/google";
 import Navbar from "@/components/navbar";
+import Link from 'next/link';
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -15,7 +16,7 @@ export default function Home() {
       <div className="bg-mainColor min-h-screen">
         <div>
           <div className="pt-[56px] my-3 mx-10">
-            <div className="flex">
+            <Link href="/" className="flex">
               <svg
                 viewBox="0 0 24 24"
                 fill="none"
@@ -37,7 +38,7 @@ export default function Home() {
                 </g>
               </svg>
               <p className="text-white text-base">Kembali</p>
-            </div>
+            </Link>
             <div className="flex gap-10 items-center mx-[105px] my-12">
               <Image
                 src={"/favicon.ico"}
@@ -173,11 +174,11 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <div className="flex flex-row gap-3 mx-48 my-12 justify-end">
+          <Link href="/" className="flex flex-row gap-3 mx-48 my-12 justify-end">
             <button className="bg-logoGrey font-semibold text-mainColor px-12 py-2 rounded-sm">
               Kembali ke Menu Utama
             </button>
-          </div>
+          </Link>
         </div>
       </div>
     </div>
