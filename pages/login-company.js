@@ -7,7 +7,7 @@ const quicksand = Quicksand({
   weight: ["300", "500"],
 });
 
-export default function Index() {
+export default function LoginCompany() {
   return (
     <div className={quicksand.className}>
       <div className="bg-mainColor min-w-screen min-h-screen flex justify-center items-center">
@@ -38,16 +38,16 @@ export default function Index() {
                   required
                 />
               </div>
-              <Link href={"/dashboard-pekerja"}>
+              <Link href={"/dashboard-perusahaan"}>
                 <button className="bg-mainColor text-white w-full text-lg py-2 mt-7 rounded-md">
                   Masuk
                 </button>
               </Link>
             </div>
             <div className="flex justify-center items-center gap-2 mx-10">
-              <Link href={"/login-company"}>
+              <Link href={"/"}>
                 <button className="text-grey text-md font-medium">
-                  Masuk Sebagai Perusahaan
+                  Masuk Sebagai Pekerja
                 </button>
               </Link>
               <svg
