@@ -19,6 +19,8 @@ module.exports = {
         redColor: "#FF492D",
         yellowColor: "#FFD51C",
         logoGrey: "#D9D9D9",
+        lightGrey: "#F5F5F5",
+        grey: "#898989",
       },
     },
   },
