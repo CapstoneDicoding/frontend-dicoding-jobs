@@ -22,7 +22,7 @@ export default function CandidatesRank() {
     {
       name: "Jamal Sutiyoso",
       skills: ["Figma", "Photoshop", "Canva"],
-      percentage: 90,
+      percentage: 100,
     },
     {
       name: "Ahmad Sulaiman",
@@ -149,7 +149,7 @@ export default function CandidatesRank() {
       </div>
       <div className="flex flex-col">
         <div
-          className={`flex mx-[105px] px-8 py-4 bg-slate-300 cursor-pointer ${
+          className={`flex mx-[105px] px-8 py-4 bg-slate-200 cursor-pointer items-center ${
             isAccordionOpen ? "rounded-t-md" : "rounded-md"
           }`}
           onClick={toggleAccordion}
@@ -159,7 +159,7 @@ export default function CandidatesRank() {
         </div>
         {isAccordionOpen && (
           <div
-            className={`flex flex-col mx-[105px] rounded-b-md px-8 py-4 bg-slate-300 border-t-2 border-gray-200 transition
+            className={`flex flex-col mx-[105px] rounded-b-md px-8 py-4 bg-slate-200 border-t-2 border-gray-300 transition
              duration-1000 ease-in-out`}
           >
             <div className="mr-3">
@@ -199,17 +199,20 @@ export default function CandidatesRank() {
           </div>
         )}
       </div>
-      <div className="flex flex-col gap-7 border-2 border-gray-400 rounded-2xl mx-[105px] items-center py-10">
+      <div className="flex flex-col gap-7 border border-[rgb(0,0,0,0.2)] rounded-2xl mx-[105px] items-center py-10">
         <p className="font-semibold text-mainColor text-2xl">DAFTAR PELAMAR</p>
-        {candidatesData.map((candidate, idx) => (
-          <CandidatesRankCard
-            key={idx + 1}
-            rank={idx + 1}
-            name={candidate.name}
-            skills={candidate.skills}
-            percentage={candidate.percentage}
-          />
-        ))}
+        <div className='flex flex-col w-full items-center'>
+          {candidatesData.map((candidate, idx) => (
+            <CandidatesRankCard
+              key={idx + 1}
+              rank={idx + 1}
+              name={candidate.name}
+              skills={candidate.skills}
+              percentage={candidate.percentage}
+              isLast={idx === candidatesData.length - 1}
+            />
+          ))}
+        </div>
         <Pagination
           navigateEndpoint={"rank-kandidat"}
           totalPages={10}
