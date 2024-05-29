@@ -7,6 +7,7 @@ import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Pagination from "@/components/pagination";
+import Link from 'next/link';
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -53,10 +54,10 @@ export default function CandidatesRank() {
 
   return (
     <main
-      className={`flex flex-col gap-12 bg-white ${quicksand.className} pb-24 my-24 mx-10`}
+      className={`flex flex-col gap-12 bg-white ${quicksand.className} pb-24 my-20 mx-10`}
     >
       <Navbar />
-      <div className="flex items-center mb-2">
+      <Link href="/dashboard-perusahaan" className="flex items-center mb-2">
         <svg
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
@@ -77,7 +78,7 @@ export default function CandidatesRank() {
           </g>
         </svg>
         <p className="font-medium text-lg">Kembali</p>
-      </div>
+      </Link>
       <div className="flex gap-10 items-center mx-[105px]">
         <Image
           src={"/favicon.ico"}
