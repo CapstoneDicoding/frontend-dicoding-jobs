@@ -2,10 +2,10 @@
 import Image from "next/image";
 import Link from 'next/link';
 
-export default function CandidatesRankCard({ rank, name, skills, percentage }) {
+export default function CandidatesRankCard({ rank, name, skills, percentage, isLast }) {
   return (
     <div
-      className="flex space-x-8 items-center p-7 border-2 border-gray-300 rounded-2xl w-full max-w-4xl"
+      className={`flex space-x-8 items-center p-7 ${ isLast ? '' : 'border-b' } border-[rgb(0,0,0,0.2)] w-full max-w-4xl`}
     >
       <div className="flex flex-none w-16 items-center justify-center">
         <p className="font-bold text-4xl text-mainColor">{rank}</p>
@@ -23,17 +23,17 @@ export default function CandidatesRankCard({ rank, name, skills, percentage }) {
         </div>
       </div>
       <div
-        className={`flex items-center ${
+        className={`flex items-center border rounded-[4px] justify-center px-4 p-2 w-24 ${
           percentage > 80
-            ? "text-greenColor"
+            ? "text-greenColor border-greenColor bg-[rgb(68,181,43,0.1)]"
             : percentage > 50
-            ? "text-yellowColor"
-            : "text-redColor"
+            ? "text-yellowColor border-yellowColor bg-[rgb(255,213,28,0.1)]"
+            : "text-redColor border-redColor bg-[rgb(255,73,45,0.1)]"
         }`}
       >
-        <p className="font-medium text-4xl">{percentage}%</p>
+        <p className="font-medium text-3xl">{percentage}%</p>
       </div> 
-      <Link href="/detail" className="flex items-center justify-center space-x-2 bg-mainColor h-12 p-4 rounded">
+      <Link href="/detail" className="flex items-center justify-center space-x-2 bg-mainColor py-2 p-4 rounded">
         <p className="font-medium text-lg text-white">Detail</p>
         <Image
           className="fill-white"

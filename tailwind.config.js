@@ -17,7 +17,7 @@ module.exports = {
         subColor: "#3B81F1",
         greenColor: "#44B52B",
         redColor: "#FF492D",
-        yellowColor: "#FFD51C",
+        yellowColor: "#E9BE00",
         logoGrey: "#D9D9D9",
         lightGrey: "#F5F5F5",
         grey: "#898989",

@@ -1,7 +1,9 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { Quicksand } from "@next/font/google";
+import Link from "next/link";
+import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -9,6 +11,12 @@ const quicksand = Quicksand({
 });
 
 function Navbar() {
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+
+  const handleProfileClick = () => {
+    setIsPopoverOpen(!isPopoverOpen);
+  };
+
   return (
     <nav
       className={`drop-shadow-lg bg-white ${quicksand.className} text-mainColor fixed top-0 left-0 right-0 z-50`}
@@ -19,9 +27,51 @@ function Navbar() {
           <Image src="/line1.png" alt="line1" width={3} height={0} />
           <p>Lowongan Kerja</p>
         </div>
-        <div className="flex items-center space-x-10">
+        <div className="flex items-center space-x-10 relative me-4">
           <p>Dashboard</p>
-          <Image src="/profil.png" alt="icon-profil" width={30} height={0} />
+          <div className="relative">
+            <div
+              className="flex items-center gap-2 cursor-pointer"
+              onClick={handleProfileClick}
+            >
+              <Image
+                src="/profil.png"
+                alt="icon-profil"
+                width={30}
+                height={0}
+              />
+              {isPopoverOpen ? <FaAngleUp /> : <FaAngleDown />}
+            </div>
+            {isPopoverOpen && (
+              <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-36 bg-white border border-gray-200 rounded-lg shadow-lg">
+                <div className="py-2">
+                  <Link href="/">
+                    <div className="flex items-center justify-center hover:bg-gray-100">
+                      <svg
+                        width="20"
+                        height="20"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="me-2"
+                      >
+                        <path
+                          d="M2.5 1.668a.833.833 0 0 0-.833.833v15c0 .46.373.834.833.834H10c.46 0 .833-.373.833-.834v-4.166a.833.833 0 0 0-1.666 0v3.333H3.333V3.335h5.834v3.333a.833.833 0 1 0 1.666 0V2.501A.833.833 0 0 0 10 1.668H2.5Z"
+                          fill="#E11D48"
+                        ></path>
+                        <path
+                          d="M14.756 6.079a.833.833 0 1 0-1.179 1.178l1.911 1.911H6.667a.833.833 0 1 0 0 1.667h8.821l-1.91 1.91a.833.833 0 1 0 1.178 1.179l3.333-3.333a.833.833 0 0 0 0-1.179L14.756 6.08Z"
+                          fill="#E11D48"
+                        ></path>
+                      </svg>
+                      <p className="block p-1 text-left text-lg text-redColor">
+                        Keluar
+                      </p>
+                    </div>
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </nav>
