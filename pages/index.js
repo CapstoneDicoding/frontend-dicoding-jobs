@@ -1,4 +1,6 @@
 "use client";
+import { useState } from "react";
+import { useRouter } from "next/router";
 import { Quicksand } from "@next/font/google";
 import Link from "next/link";
 
@@ -8,6 +10,32 @@ const quicksand = Quicksand({
 });
 
 export default function Index() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const router = useRouter();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const res = await fetch('/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      localStorage.setItem('token', data.token);
+      router.push('/dashboard-pekerja');
+    } else {
+      setError(data.message);
+    }
+  };
+
   return (
     <div className={quicksand.className}>
       <div className="bg-mainColor min-w-screen min-h-screen flex justify-center items-center">
@@ -19,13 +47,15 @@ export default function Index() {
             <h1 className="text-white text-3xl font-bold">Dicoding Jobs</h1>
           </div>
           <div className="bg-white flex flex-col gap-20 pb-8 rounded-lg">
-            <div className="flex flex-col gap-5 pt-10 px-10">
+            <form className="flex flex-col gap-5 pt-10 px-10" onSubmit={handleSubmit}>
               <div className="flex flex-col gap-2">
                 <p className="text-mainColor font-semibold">Username:</p>
                 <input
-                  type="username"
+                  type="text"
                   placeholder="Masukkan Username"
                   className="bg-lightGrey w-96 px-5 py-2 border border-logoGrey"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                   required
                 />
               </div>
@@ -34,16 +64,19 @@ export default function Index() {
                 <input
                   type="password"
                   placeholder="Masukkan Password"
-                  className="bg-lightGrey w-92 px-5 py-2 border border-logoGrey"
+                  className="bg-lightGrey w-96 px-5 py-2 border border-logoGrey"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                 />
               </div>
+              {error && <p className="text-red-500">{error}</p>}
               <Link href={"/dashboard-pekerja"}>
-                <button className="bg-mainColor text-white w-full text-lg py-2 mt-7 rounded-md">
-                  Masuk
-                </button>
+              <button className="bg-mainColor text-white w-full text-lg py-2 mt-7 rounded-md" type="submit">
+                Masuk
+              </button>
               </Link>
-            </div>
+            </form>
             <div className="flex justify-center items-center gap-2 mx-10">
               <Link href={"/login-company"}>
                 <button className="text-grey text-md font-medium">
@@ -63,14 +96,13 @@ export default function Index() {
                   stroke-linejoin="round"
                 ></g>
                 <g id="SVGRepo_iconCarrier">
-                  {" "}
                   <path
                     d="M9.5 7L14.5 12L9.5 17"
                     stroke="#898989"
                     stroke-width="1.5"
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                  ></path>{" "}
+                  ></path>
                 </g>
               </svg>
             </div>
