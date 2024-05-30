@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Cookies from 'js-cookie';
 import { Quicksand } from "@next/font/google";
 import Link from "next/link";
 
@@ -18,7 +19,7 @@ export default function Index() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await fetch('/api/login', {
+    const res = await fetch('http://localhost:3000/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -29,8 +30,9 @@ export default function Index() {
     const data = await res.json();
 
     if (res.ok) {
-      localStorage.setItem('token', data.token);
-      router.push('/dashboard-pekerja');
+      Cookies.set('token', data.access_token, { expires: 1, secure: process.env.NODE_ENV !== 'development' });
+      Cookies.set('role', data.role, { expires: 1, secure: process.env.NODE_ENV !== 'development' });
+      router.push('/dashboard-pelamar');
     } else {
       setError(data.message);
     }
@@ -71,11 +73,9 @@ export default function Index() {
                 />
               </div>
               {error && <p className="text-red-500">{error}</p>}
-              <Link href={"/dashboard-pekerja"}>
               <button className="bg-mainColor text-white w-full text-lg py-2 mt-7 rounded-md" type="submit">
                 Masuk
               </button>
-              </Link>
             </form>
             <div className="flex justify-center items-center gap-2 mx-10">
               <Link href={"/login-company"}>

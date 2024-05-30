@@ -1,5 +1,8 @@
 "use client";
 import { Quicksand } from "@next/font/google";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import Cookies from 'js-cookie';
 import Navbar from "@/components/navbar";
 import Pagination from "@/components/pagination";
 import LowonganCard from "@/components/lowonganPekerja-card";
@@ -10,6 +13,29 @@ const quicksand = Quicksand({
 });
 
 export default function CandidatesRank() {
+    const [user, setUser] = useState(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = Cookies.get('token');
+    const loginRole = Cookies.get('role');
+
+    if (!token) {
+      router.push('/');
+      return;
+    }
+
+    try {
+      if (loginRole !== 'candidate') {
+        router.push('/');
+        return;
+      }
+      setUser({role: loginRole });
+    } catch (error) {
+      router.push('/');
+    }
+  }, []);
+
   const jobsData = [
     {
       name: "Software Engineer",
