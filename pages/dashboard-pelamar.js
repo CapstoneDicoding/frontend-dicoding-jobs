@@ -21,17 +21,22 @@ export default function CandidatesRank() {
     const loginRole = Cookies.get('role');
 
     if (!token) {
+      Cookies.remove('role');
       router.push('/');
       return;
     }
 
     try {
       if (loginRole !== 'candidate') {
+        Cookies.remove('token'); 
+      Cookies.remove('role');
         router.push('/');
         return;
       }
       setUser({role: loginRole });
     } catch (error) {
+      Cookies.remove('token'); 
+      Cookies.remove('role');
       router.push('/');
     }
   }, []);

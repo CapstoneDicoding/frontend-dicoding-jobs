@@ -26,7 +26,7 @@ export default function CandidatesRank() {
       }
   
       try {
-        if (loginRole !== 'company') {
+        if (loginRole !== 'recruiter') {
           router.push('/login-company');
           return;
         }
