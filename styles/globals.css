@@ -37,3 +37,11 @@ html, body {
   border-radius: 0.5rem;
   overflow: hidden;
 }
+
+.prose ul {
+  color: #304153; /* Tailwind's blue-700 */
+}
+
+.prose ul > li::marker {
+  color: #304153; /* Change bullet color */
+}

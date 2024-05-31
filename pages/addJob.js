@@ -1,9 +1,12 @@
 "use client";
 import Image from "next/image";
 import { Quicksand } from "@next/font/google";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
+import { useRouter } from "next/router";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -13,10 +16,65 @@ const quicksand = Quicksand({
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 export default function AddJob() {
-  const [editorContent, setEditorContent] = useState("");
+  const [name, setName] = useState(null);
+  const [sector, setSector] = useState(null);
+  const [req, setReq] = useState(null);
+  const [needed, setNeeded] = useState(null);
+  const router = useRouter();
+  const token = Cookies.get("token");
+  const role = Cookies.get("role");
 
-  const handleEditorChange = (content) => {
-    setEditorContent(content);
+  const handleEditorChange = (req) => {
+    setReq(req);
+  };
+
+  useEffect(() => {
+    if (!token) {
+      router.push("/login-company");
+      return;
+    } else {
+      if (role !== "recruiter") {
+        Cookies.remove("token");
+        Cookies.remove("role");
+        router.push("/login-company");
+        return;
+      }
+    }
+
+    const decodedToken = jwtDecode(token);
+    const currentTime = Math.floor(Date.now() / 1000);
+
+    if (decodedToken.exp < currentTime) {
+      Cookies.remove("token");
+      Cookies.remove("role");
+      router.push("/login-company");
+      return;
+    }
+  });
+
+  const handleSubmit = async () => {
+    const response = await fetch("http://localhost:3000/jobs", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        name: name,
+        business_sector: sector,
+        requirements: req,
+        candidate_needed: +needed,
+      }),
+    });
+
+    console.log("res: ", response)
+
+    if (response.ok) {
+      router.push("/rank-kandidat");
+      return;
+    } else {
+      alert("Failed");
+    }
   };
 
   return (
@@ -53,8 +111,9 @@ export default function AddJob() {
               <input
                 className="border-solid border-2 border-mainColor rounded-md p-2"
                 type="text"
-                name="name"
                 placeholder="Back-end Dev..."
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
             <div className="flex flex-col space-y-1.5">
@@ -62,8 +121,9 @@ export default function AddJob() {
               <input
                 className="border-solid border-2 border-mainColor rounded-md p-2"
                 type="text"
-                name="business_sector"
                 placeholder="Technology..."
+                value={sector}
+                onChange={(e) => setSector(e.target.value)}
               />
             </div>
             <div className="flex flex-col space-y-1.5">
@@ -72,9 +132,10 @@ export default function AddJob() {
                 <input
                   className="border-solid border-2 border-mainColor rounded-md p-2 w-16"
                   type="number"
-                  name="needed"
                   min="0"
                   defaultValue="0"
+                  value={needed}
+                  onChange={(e) => setNeeded(e.target.value)}
                 />
               </div>
             </div>
@@ -83,15 +144,19 @@ export default function AddJob() {
             <div className="flex flex-col space-y-1.5">
               <p>Persyaratan Pekerjaan</p>
               <ReactQuill
-                value={editorContent}
+                value={req}
                 onChange={handleEditorChange}
                 theme="snow"
                 className="custom-quill"
               />
             </div>
             <div className="flex justify-end">
-              <button className="bg-mainColor border rounded-md py-2 px-6">
-                <p className="text-white">Tambah Pekerjaan</p>
+              <button
+                className="bg-mainColor border rounded-md py-2 px-6 text-white"
+                type="submit"
+                onClick={handleSubmit}
+              >
+                Tambah Pekerjaan
               </button>
             </div>
           </div>

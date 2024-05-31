@@ -35,6 +35,7 @@ export default function CandidatesRank() {
         router.push('/login-company');
       }
     }, []);
+
   const jobsData = [
     {
       name: "Software Engineer",
