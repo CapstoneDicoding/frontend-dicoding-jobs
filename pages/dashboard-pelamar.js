@@ -2,7 +2,7 @@
 import { Quicksand } from "@next/font/google";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 import Navbar from "@/components/navbar";
 import Pagination from "@/components/pagination";
 import LowonganCard from "@/components/lowonganPekerja-card";
@@ -13,31 +13,31 @@ const quicksand = Quicksand({
 });
 
 export default function CandidatesRank() {
-    const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
-    const token = Cookies.get('token');
-    const loginRole = Cookies.get('role');
+    const token = Cookies.get("token");
+    const loginRole = Cookies.get("role");
 
     if (!token) {
-      Cookies.remove('role');
-      router.push('/');
+      Cookies.remove("role");
+      router.push("/");
       return;
     }
 
     try {
-      if (loginRole !== 'candidate') {
-        Cookies.remove('token'); 
-      Cookies.remove('role');
-        router.push('/');
+      if (loginRole !== "candidate") {
+        Cookies.remove("token");
+        Cookies.remove("role");
+        router.push("/");
         return;
       }
-      setUser({role: loginRole });
+      setUser({ role: loginRole });
     } catch (error) {
-      Cookies.remove('token'); 
-      Cookies.remove('role');
-      router.push('/');
+      Cookies.remove("token");
+      Cookies.remove("role");
+      router.push("/");
     }
   }, []);
 

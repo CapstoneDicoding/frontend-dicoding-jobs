@@ -1,11 +1,19 @@
 "use client";
 import Image from "next/image";
-import Link from 'next/link';
+import Link from "next/link";
 
-export default function CandidatesRankCard({ rank, name, skills, percentage, isLast }) {
+export default function CandidatesRankCard({
+  rank,
+  name,
+  skills,
+  percentage,
+  isLast,
+}) {
   return (
     <div
-      className={`flex space-x-8 items-center p-7 ${ isLast ? '' : 'border-b' } border-[rgb(0,0,0,0.2)] w-full max-w-4xl`}
+      className={`flex space-x-8 items-center p-7 ${
+        isLast ? "" : "border-b"
+      } border-[rgb(0,0,0,0.2)] w-full max-w-4xl`}
     >
       <div className="flex flex-none w-16 items-center justify-center">
         <p className="font-bold text-4xl text-mainColor">{rank}</p>
@@ -19,7 +27,7 @@ export default function CandidatesRankCard({ rank, name, skills, percentage, isL
         ></Image>
         <div className="flex flex-col justify-center">
           <p className="font-semibold text-xl">{name}</p>
-          <p className="text-base">Skills: {skills.join(', ')}</p>
+          <p className="text-base">Skills: {skills.join(", ")}</p>
         </div>
       </div>
       <div
@@ -32,8 +40,12 @@ export default function CandidatesRankCard({ rank, name, skills, percentage, isL
         }`}
       >
         <p className="font-medium text-3xl">{percentage}%</p>
-      </div> 
-      <Link href="/detail" className="flex items-center justify-center space-x-2 bg-mainColor py-2 p-4 rounded">
+      </div>
+      {/*querynya dikasih dinamis ya kak (id di tabel cv nya)*/}
+      <Link
+        href={{ pathname: "/detail", query: { id: 2 } }}
+        className="flex items-center justify-center space-x-2 bg-mainColor py-2 p-4 rounded"
+      >
         <p className="font-medium text-lg text-white">Detail</p>
         <Image
           className="fill-white"
