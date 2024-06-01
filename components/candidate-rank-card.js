@@ -3,6 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function CandidatesRankCard({
+  id,
+  job_id,
   rank,
   name,
   skills,
@@ -41,9 +43,8 @@ export default function CandidatesRankCard({
       >
         <p className="font-medium text-3xl">{percentage}%</p>
       </div>
-      {/*querynya dikasih dinamis ya kak (id di tabel cv nya)*/}
       <Link
-        href={{ pathname: "/detail", query: { id: 2 } }}
+        href={`/company-jobs/${job_id}/candidates/${id}`}
         className="flex items-center justify-center space-x-2 bg-mainColor py-2 p-4 rounded"
       >
         <p className="font-medium text-lg text-white">Detail</p>

@@ -107,6 +107,7 @@ export default function CandidatesRank() {
                 : jobsData.map((job, idx) => (
                     <LowonganCard
                       key={idx + 1}
+                      id={job.id}
                       name={job.name}
                       companyName={job.company.user.fullname}
                       companyLocation={job.company.location}
@@ -115,7 +116,7 @@ export default function CandidatesRank() {
                   ))}
             </div>
             <Pagination
-              navigateEndpoint={"dashboard-pelamar"}
+              navigateEndpoint={"jobs"}
               totalPages={totalPages}
             ></Pagination>
           </div>

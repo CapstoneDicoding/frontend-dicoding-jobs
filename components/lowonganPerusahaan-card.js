@@ -3,10 +3,11 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function LowonganPerusahaanCard({
+  id,
   name,
   companyName,
   companyLocation,
-  candidateNeeded,
+  candidateApplied,
 }) {
   return (
     <div className="flex space-x-8 items-center p-8 border-2 border-gray-300 rounded-lg">
@@ -70,13 +71,13 @@ export default function LowonganPerusahaanCard({
                 fill="#3F3F46"
               ></path>
             </svg>
-            <p className="text-base">{candidateNeeded} pelamar</p>
+            <p className="text-base">{candidateApplied} pelamar</p>
           </div>
           <div className="flex gap-12"></div>
         </div>
       </div>
       <Link
-        href="/rank-kandidat"
+        href={`/company-jobs/${id}/candidates`}
         className="flex items-center justify-center space-x-2 bg-mainColor h-12 p-4 rounded"
       >
         <p className="font-medium text-lg text-white">Detail</p>

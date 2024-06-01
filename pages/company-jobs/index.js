@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import Navbar from "@/components/navbar";
 import Pagination from "@/components/pagination";
-import LowonganCard from "@/components/lowonganPekerja-card";
+import LowonganPerusahaanCard from "@/components/lowonganPerusahaan-card";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -25,30 +25,28 @@ export default function CandidatesRank() {
   const loginRole = Cookies.get("role");
 
   useEffect(() => {
+    const token = Cookies.get("token");
+    const loginRole = Cookies.get("role");
+
     if (!token) {
-      Cookies.remove("role");
-      router.push("/");
+      router.push("/login-company");
       return;
     }
 
     try {
-      if (loginRole !== "candidate") {
-        Cookies.remove("token");
-        Cookies.remove("role");
-        router.push("/");
+      if (loginRole !== "recruiter") {
+        router.push("/login-company");
         return;
       }
       setUser({ role: loginRole });
     } catch (error) {
-      Cookies.remove("token");
-      Cookies.remove("role");
-      router.push("/");
+      router.push("/login-company");
     }
   }, []);
-
+  
   useEffect(() => {
     setIsLoading(true);
-    fetch(`http://localhost:3000/jobs?page=${page}&limit=${limit}`, {
+    fetch(`http://localhost:3000/jobs/company?page=${page}&limit=${limit}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -58,6 +56,7 @@ export default function CandidatesRank() {
         return response.json();
       })
       .then((data) => {
+        console.log(jobsData)
         setJobsData(data.data.jobs);
         setTotalPages(data.data.pagination.totalPages);
         setIsLoading(false);
@@ -74,9 +73,9 @@ export default function CandidatesRank() {
       <Navbar />
       <div className="bg-black min-h-screen mt-14">
         <div className="bg-black bg-[url(/wayfinder.png)] bg-center bg-cover flex flex-col gap-10 py-28 px-20 ">
-          <div className="max-w-[40%] h-full flex items-center">
+          <div className="max-w-[50%] h-full flex items-center">
             <p className="text-white text-4xl font-semibold leading-snug">
-              Temukan lowongan yang cocok untuk kamu
+              Temukan kandidat yang cocok untuk tim kamu
             </p>
           </div>
         </div>
@@ -105,17 +104,18 @@ export default function CandidatesRank() {
                     </div>
                   ))
                 : jobsData.map((job, idx) => (
-                    <LowonganCard
+                    <LowonganPerusahaanCard
                       key={idx + 1}
+                      id={job.id}
                       name={job.name}
                       companyName={job.company.user.fullname}
                       companyLocation={job.company.location}
-                      candidateNeeded={job.candidate_needed}
+                      candidateApplied={job._count.curriculum_vitaes}
                     />
                   ))}
             </div>
             <Pagination
-              navigateEndpoint={"dashboard-pelamar"}
+              navigateEndpoint={"company-jobs"}
               totalPages={totalPages}
             ></Pagination>
           </div>

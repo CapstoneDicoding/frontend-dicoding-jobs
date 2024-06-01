@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function LowonganCard({
+  id,
   name,
   companyName,
   companyLocation,
@@ -76,7 +77,7 @@ export default function LowonganCard({
         </div>
       </div>
       <Link
-        href="/daftar"
+        href={`/jobs/${id}/apply`}
         className="flex items-center justify-center space-x-2 bg-mainColor h-12 p-4 rounded"
       >
         <p className="font-medium text-lg text-white">Daftar</p>
