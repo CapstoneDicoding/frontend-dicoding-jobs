@@ -32,7 +32,7 @@ export default function Index() {
     if (res.ok) {
       Cookies.set('token', data.access_token, { expires: 1, secure: process.env.NODE_ENV !== 'development' });
       Cookies.set('role', data.role, { expires: 1, secure: process.env.NODE_ENV !== 'development' });
-      router.push('/dashboard-perusahaan');
+      router.push('/company-jobs');
     } else {
       setError(data.message);
     }

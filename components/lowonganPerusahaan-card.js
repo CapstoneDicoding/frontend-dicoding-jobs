@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function LowonganPerusahaanCard({
+  id,
   name,
   companyName,
   companyLocation,
@@ -76,7 +77,7 @@ export default function LowonganPerusahaanCard({
         </div>
       </div>
       <Link
-        href="/rank-kandidat"
+        href={`/company-jobs/${id}/candidates`}
         className="flex items-center justify-center space-x-2 bg-mainColor h-12 p-4 rounded"
       >
         <p className="font-medium text-lg text-white">Detail</p>
