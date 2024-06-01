@@ -6,7 +6,7 @@ export default function LowonganPerusahaanCard({
   name,
   companyName,
   companyLocation,
-  candidateNeeded,
+  candidateApplied,
 }) {
   return (
     <div className="flex space-x-8 items-center p-8 border-2 border-gray-300 rounded-lg">
@@ -70,7 +70,7 @@ export default function LowonganPerusahaanCard({
                 fill="#3F3F46"
               ></path>
             </svg>
-            <p className="text-base">{candidateNeeded} pelamar</p>
+            <p className="text-base">{candidateApplied} pelamar</p>
           </div>
           <div className="flex gap-12"></div>
         </div>
