@@ -1,4 +1,3 @@
-"use client";
 import { Quicksand } from "@next/font/google";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
@@ -6,6 +5,7 @@ import Cookies from "js-cookie";
 import Navbar from "@/components/navbar";
 import Pagination from "@/components/pagination";
 import LowonganPerusahaanCard from "@/components/lowonganPerusahaan-card";
+import Link from "next/link";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -43,7 +43,7 @@ export default function CandidatesRank() {
       router.push("/login-company");
     }
   }, []);
-  
+
   useEffect(() => {
     setIsLoading(true);
     fetch(`http://localhost:3000/jobs/company?page=${page}&limit=${limit}`, {
@@ -56,7 +56,7 @@ export default function CandidatesRank() {
         return response.json();
       })
       .then((data) => {
-        console.log(jobsData)
+        console.log(jobsData);
         setJobsData(data.data.jobs);
         setTotalPages(data.data.pagination.totalPages);
         setIsLoading(false);
@@ -72,11 +72,16 @@ export default function CandidatesRank() {
     >
       <Navbar />
       <div className="bg-black min-h-screen mt-14">
-        <div className="bg-black bg-[url(/wayfinder.png)] bg-center bg-cover flex flex-col gap-10 py-28 px-20 ">
+        <div className="bg-black bg-[url(/wayfinder.png)] bg-center bg-cover flex justify-between items-end gap-10 py-28 px-20 ">
           <div className="max-w-[50%] h-full flex items-center">
             <p className="text-white text-4xl font-semibold leading-snug">
               Temukan kandidat yang cocok untuk tim kamu
             </p>
+          </div>
+          <div className="bg-white p-3 rounded flex items-end">
+            <Link href="company-jobs/add">
+              <p className="text-mainColor font-medium text-xl">Buat Lowongan +</p>
+            </Link>
           </div>
         </div>
         <div className="bg-white rounded-t-3xl py-10">
