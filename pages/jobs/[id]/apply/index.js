@@ -3,16 +3,134 @@ import Image from "next/image";
 import { Quicksand } from "@next/font/google";
 import Navbar from "@/components/navbar";
 import Link from "next/link";
-import { useRouter } from 'next/router';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
   weight: ["300", "500"],
 });
 
-export default function Home() {
+const Daftar = ({}) => {
+  const [data, setData] = useState(null);
+  const router = useRouter();
+  const [userData, setUserData] = useState(null);
+  const token = Cookies.get("token");
+  const role = Cookies.get("role");
+
   const { query } = useRouter();
   const { id } = query;
+
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
+  useEffect(() => {
+    if (!token) {
+      router.push("/");
+      return;
+    } else {
+      if (role !== "candidate") {
+        Cookies.remove("token");
+        Cookies.remove("role");
+        router.push("/");
+        return;
+      }
+    }
+
+    const decodedToken = jwtDecode(token);
+    const currentTime = Math.floor(Date.now() / 1000);
+
+    if (decodedToken.exp < currentTime) {
+      Cookies.remove("token");
+      Cookies.remove("role");
+      router.push("/");
+      return;
+    }
+
+    async function fetchData() {
+      try {
+        const res = await fetch(`http://localhost:3000/jobs/${id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        console.log({ res });
+
+        if (res.ok) {
+          const result = await res.json();
+          setData(result);
+          console.log(result);
+        }
+      } catch (error) {
+        console.error("Fetch error:", error);
+      }
+    }
+    async function fetchUserData() {
+      try {
+        const res = await fetch(
+          `http://localhost:3000/candidates/${decodedToken.candidate_id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (res.ok) {
+          const result = await res.json();
+          setUserData(result);
+        }
+      } catch (error) {
+        console.error("Fetch user data error:", error);
+      }
+    }
+
+    fetchData();
+    fetchUserData();
+  }, []);
+
+  if (!data || !userData) {
+    return <div>Memuat data...</div>;
+  }
+
+  const handleFileUpload = async () => {
+    if (!selectedFile) {
+      alert("Pilih file terlebih dahulu");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("cv", selectedFile);
+
+    try {
+      const response = await fetch("http://localhost:3000/cvs", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      if (response.ok) {
+        alert("File berhasil diunggah");
+      } else {
+        alert("Gagal mengunggah file");
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      alert("Terjadi kesalahan saat mengunggah file");
+    }
+  };
 
   return (
     <div className={quicksand.className}>
@@ -41,23 +159,23 @@ export default function Home() {
                   ></path>{" "}
                 </g>
               </svg>
-              <Link href="/jobs">
+              <Link href="/dashboard-pekerja">
                 <p className="text-white text-base">Kembali</p>
               </Link>
             </div>
             <div className="flex gap-10 items-center mx-[105px] my-12">
               <Image
-                src={"/favicon.ico"}
+                src={data.data.job.company.user.photo_path}
                 alt="Profile Picture"
                 width={100}
                 height={100}
               />
               <div className="flex flex-col gap-1">
                 <h1 className="text-white font-bold text-2xl">
-                  LEARNING DESIGNER
+                  {data.data.job.name}
                 </h1>
                 <h3 className="text-subColor font-bold text-xl">
-                  Sektor Bisnis: Teknologi
+                  Sektor Bisnis: {data.data.job.business_sector}
                 </h3>
                 <div className="flex gap-3">
                   <div className="flex gap-1">
@@ -78,7 +196,9 @@ export default function Home() {
                         <path d="M22,7H13V2a1,1,0,0,0-1-1H2A1,1,0,0,0,1,2V22a1,1,0,0,0,1,1H22a1,1,0,0,0,1-1V8A1,1,0,0,0,22,7ZM11,13H3V11h8Zm0-5V9H3V7h8ZM3,15h8v2H3ZM11,3V5H3V3ZM3,19h8v2H3Zm18,2H13V9h8Zm-5-5H14V14h2Zm0,4H14V18h2Zm4-4H18V14h2Zm-4-4H14V10h2Zm4,0H18V10h2Zm0,8H18V18h2Z"></path>
                       </g>
                     </svg>
-                    <p className="text-white text-base">Dicoding Indonesia</p>
+                    <p className="text-white text-base">
+                      {data.data.job.company.user.fullname}
+                    </p>
                   </div>
                   <div className="flex gap-1">
                     <svg
@@ -111,7 +231,9 @@ export default function Home() {
                         ></path>{" "}
                       </g>
                     </svg>
-                    <p className="text-white text-base">Kota Bandung</p>
+                    <p className="text-white text-base">
+                      {data.data.job.company.location}
+                    </p>
                   </div>
                   <div className="flex gap-1">
                     <svg
@@ -145,7 +267,9 @@ export default function Home() {
                         </g>{" "}
                       </g>
                     </svg>
-                    <p className="text-white text-base">2</p>
+                    <p className="text-white text-base">
+                      {data.data.job.candidate_needed}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -158,45 +282,17 @@ export default function Home() {
               <h1 className="text-mainColor font-bold text-2xl">
                 Persyaratan Pekerjaan
               </h1>
-              <ul className="list-disc ml-6 text-mainColor">
-                <li>
-                  Memiliki latar belakang S1 yang relevan dengan bidang desain
-                  pembelajaran, lebih diutamakan dari jurusan Psikologi, dengan
-                  bidang minat salah satu dari kelompok keahlian berikut:
-                </li>
-                <ul className="list-disc ml-6 text-mainColor">
-                  <li>Psikologi Perkembangan</li>
-                  <li>Psikologi Pendidikan</li>
-                  <li>Psikologi Industri dan Organisasi</li>
-                  <li>Psikologi Sosial</li>
-                </ul>
-                <li>
-                  Memiliki pengalaman dalam merancang program pembelajaran.
-                </li>
-              </ul>
-              <ul className="list-disc ml-6 text-mainColor">
-                <li>
-                  Memiliki latar belakang S1 yang relevan dengan bidang desain
-                  pembelajaran, lebih diutamakan dari jurusan Psikologi, dengan
-                  bidang minat salah satu dari kelompok keahlian berikut:
-                </li>
-                <ul className="list-disc ml-6 text-mainColor">
-                  <li>Psikologi Perkembangan</li>
-                  <li>Psikologi Pendidikan</li>
-                  <li>Psikologi Industri dan Organisasi</li>
-                  <li>Psikologi Sosial</li>
-                </ul>
-                <li>
-                  Memiliki pengalaman dalam merancang program pembelajaran.
-                </li>
-              </ul>
+              <div
+                className="prose"
+                dangerouslySetInnerHTML={{ __html: data.data.job.requirements }}
+              ></div>
             </div>
             <div className="basis-3/5">
               <div className=" flex flex-col justify-center gap-12">
                 <div className="flex gap-5">
                   <div className="w-24 h-24 overflow-hidden rounded-full border-2 border-gray-300 relative">
                     <Image
-                      src="/asahi.jpeg"
+                      src={userData.user.photo_path}
                       alt="Profile Picture"
                       layout="fill"
                       objectFit="cover"
@@ -204,16 +300,16 @@ export default function Home() {
                   </div>
                   <div className="flex flex-col justify-center">
                     <p className="text-mainColor text-xl font-bold">
-                      Jessica Evangeline Winardy
+                      {userData.user.fullname}
                     </p>
                     <p className="text-mainColor text-md font-medium">
-                      Back-End Developer
+                      {userData.skills.join(", ")}
                     </p>
                   </div>
                 </div>
                 <div className="flex flex-col gap-4">
                   <p className="text-mainColor font-bold">CV/Resume</p>
-                  <div className="flex flex-col px-52 py-20 items-center justify-center border-2 border-logoGrey gap-5">
+                  <div className="flex flex-col px-52 py-20 items-center justify-center text-center border-2 border-logoGrey gap-5">
                     <svg
                       className="w-16"
                       viewBox="0 0 15 15"
@@ -235,20 +331,21 @@ export default function Home() {
                       </g>
                     </svg>
                     <p>Unggah Berkas dalam Bentuk PDF (Maksimal 5 MB)</p>
-                    <button className="bg-lightGrey px-2 py-1 border-2 border-logoGrey">
-                      Unggah
-                    </button>
+                    <input type="file" onChange={handleFileChange} />
                   </div>
                 </div>
               </div>
               <div className="flex flex-row gap-3 my-12 justify-end">
-                <Link href="/jobs">
+                <Link href="/dashboard-pekerja">
                   <button className="bg-logoGrey font-semibold text-mainColor px-12 py-2 rounded-sm">
                     Batal
                   </button>
                 </Link>
                 <Link href={`/jobs/${id}/apply/sent`}>
-                  <button className="bg-mainColor font-semibold text-white px-5 py-2 rounded-sm">
+                  <button
+                    className="bg-mainColor font-semibold text-white px-5 py-2 rounded-sm"
+                    onClick={handleFileUpload}
+                  >
                     Kirim Lamaran
                   </button>
                 </Link>
@@ -259,4 +356,6 @@ export default function Home() {
       </div>
     </div>
   );
-}
+};
+
+export default Daftar;

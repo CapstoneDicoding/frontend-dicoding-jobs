@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/router";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 import { Quicksand } from "@next/font/google";
 import Link from "next/link";
 
@@ -11,18 +11,18 @@ const quicksand = Quicksand({
 });
 
 export default function Index() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await fetch('http://localhost:3000/login', {
-      method: 'POST',
+    const res = await fetch("http://localhost:3000/login", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ username, password }),
     });
@@ -30,9 +30,17 @@ export default function Index() {
     const data = await res.json();
 
     if (res.ok) {
-      Cookies.set('token', data.access_token, { expires: 1, secure: process.env.NODE_ENV !== 'development' });
-      Cookies.set('role', data.role, { expires: 1, secure: process.env.NODE_ENV !== 'development' });
-      router.push('/jobs');
+      Cookies.set("token", data.access_token, {
+        expires: 1,
+        secure: process.env.NODE_ENV !== "development",
+      });
+      Cookies.set("role", data.role, {
+        expires: 1,
+        secure: process.env.NODE_ENV !== "development",
+      });
+      router.push("/jobs");
+    } else if (res.status === 401) {
+      setError("Username/password salah");
     } else {
       setError(data.message);
     }
@@ -49,7 +57,10 @@ export default function Index() {
             <h1 className="text-white text-3xl font-bold">Dicoding Jobs</h1>
           </div>
           <div className="bg-white flex flex-col gap-20 pb-8 rounded-lg">
-            <form className="flex flex-col gap-5 pt-10 px-10" onSubmit={handleSubmit}>
+            <form
+              className="flex flex-col gap-5 pt-10 px-10"
+              onSubmit={handleSubmit}
+            >
               <div className="flex flex-col gap-2">
                 <p className="text-mainColor font-semibold">Username:</p>
                 <input
@@ -73,7 +84,10 @@ export default function Index() {
                 />
               </div>
               {error && <p className="text-red-500">{error}</p>}
-              <button className="bg-mainColor text-white w-full text-lg py-2 mt-7 rounded-md" type="submit">
+              <button
+                className="bg-mainColor text-white w-full text-lg py-2 mt-7 rounded-md"
+                type="submit"
+              >
                 Masuk
               </button>
             </form>
