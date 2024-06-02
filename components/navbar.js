@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { Quicksand } from "@next/font/google";
 import { useRouter } from "next/router";
@@ -10,10 +10,12 @@ const quicksand = Quicksand({
   weight: ["300", "500"],
 });
 
+
 function Navbar() {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const router = useRouter();
-  const photoPath = Cookies.get("photo_path");
+
+  const photo_path = Cookies.get("photo_path")
 
   const handleProfileClick = () => {
     setIsPopoverOpen(!isPopoverOpen);
@@ -22,6 +24,7 @@ function Navbar() {
   const handleLogout = () => {
     Cookies.remove('token'); 
     Cookies.remove('role');
+    Cookies.remove('photo_path');
     router.push('/');
   };
 
@@ -44,7 +47,7 @@ function Navbar() {
             >
               <div className="w-9 h-9 overflow-hidden rounded-full border-2 border-gray-300 relative">
                     <Image
-                      src={photoPath}
+                      src={photo_path}
                       alt="Profile Picture"
                       layout="fill"
                       objectFit="cover"
