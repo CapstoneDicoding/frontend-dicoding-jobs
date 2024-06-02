@@ -7,6 +7,7 @@ export default function CandidatesRankCard({
   job_id,
   rank,
   name,
+  picture,
   skills,
   percentage,
   isLast,
@@ -20,13 +21,15 @@ export default function CandidatesRankCard({
       <div className="flex flex-none w-16 items-center justify-center">
         <p className="font-bold text-4xl text-mainColor">{rank}</p>
       </div>
-      <div className="flex flex-1 space-x-5">
-        <Image
-          src="/profil.png"
-          alt="icon-profil"
-          width={65}
-          height={0}
-        ></Image>
+      <div className="flex flex-1 space-x-5 w-[100px]">
+        <div className="w-24 h-24 overflow-hidden rounded-full border-2 border-gray-300 relative">
+          <Image
+            src={picture}
+            alt="Profile Picture"
+            layout="fill"
+            objectFit="cover"
+          />
+        </div>
         <div className="flex flex-col justify-center">
           <p className="font-semibold text-xl">{name}</p>
           <p className="text-base">Skills: {skills.join(", ")}</p>

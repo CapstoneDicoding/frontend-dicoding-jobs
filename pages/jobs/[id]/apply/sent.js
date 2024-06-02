@@ -130,7 +130,7 @@ export default function Sent() {
                   ></path>{" "}
                 </g>
               </svg>
-              <Link href="/dashboard-pekerja">
+              <Link href="/jobs">
                 <p className="text-white text-base">Kembali</p>
               </Link>
             </div>
