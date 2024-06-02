@@ -54,7 +54,7 @@ export default function AddJob() {
   });
 
   const handleSubmit = async () => {
-    const response = await fetch("http://localhost:3000/jobs", {
+    const response = await fetch("https://dicoding-jobs-capstone-ry2qx4pc7a-et.a.run.app/jobs", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

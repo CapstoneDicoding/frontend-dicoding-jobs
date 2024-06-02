@@ -19,7 +19,7 @@ export default function Index() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await fetch("http://localhost:3000/login", {
+    const res = await fetch("https://dicoding-jobs-capstone-ry2qx4pc7a-et.a.run.app/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

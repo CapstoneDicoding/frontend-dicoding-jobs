@@ -54,7 +54,7 @@ export default function Sent() {
 
     async function fetchData() {
       try {
-        const res = await fetch(`http://localhost:3000/jobs/${id}`, {
+        const res = await fetch(`https://dicoding-jobs-capstone-ry2qx4pc7a-et.a.run.app/jobs/${id}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -76,7 +76,7 @@ export default function Sent() {
     async function fetchUserData() {
       try {
         const res = await fetch(
-          `http://localhost:3000/candidates/${decodedToken.candidate_id}`,
+          `https://dicoding-jobs-capstone-ry2qx4pc7a-et.a.run.app/candidates/${decodedToken.candidate_id}`,
           {
             method: "GET",
             headers: {

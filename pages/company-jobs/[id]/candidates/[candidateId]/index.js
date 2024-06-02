@@ -53,7 +53,7 @@ const Detail = ({ initialId }) => {
 
     async function fetchData() {
       try {
-        const res = await fetch(`http://localhost:3000/cvs/${idCv}`, {
+        const res = await fetch(`https://dicoding-jobs-capstone-ry2qx4pc7a-et.a.run.app/cvs/${idCv}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
