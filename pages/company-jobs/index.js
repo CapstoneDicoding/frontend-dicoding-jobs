@@ -46,7 +46,7 @@ export default function CandidatesRank() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`http://localhost:3000/jobs/company?page=${page}&limit=${limit}`, {
+    fetch(`https://dicoding-jobs-capstone-ry2qx4pc7a-et.a.run.app/jobs/company?page=${page}&limit=${limit}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,

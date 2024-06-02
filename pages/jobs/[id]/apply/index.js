@@ -54,7 +54,7 @@ const Daftar = ({}) => {
 
     async function fetchData() {
       try {
-        const res = await fetch(`http://localhost:3000/jobs/${id}`, {
+        const res = await fetch(`https://dicoding-jobs-capstone-ry2qx4pc7a-et.a.run.app/jobs/${id}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -76,7 +76,7 @@ const Daftar = ({}) => {
     async function fetchUserData() {
       try {
         const res = await fetch(
-          `http://localhost:3000/candidates/${decodedToken.candidate_id}`,
+          `https://dicoding-jobs-capstone-ry2qx4pc7a-et.a.run.app/candidates/${decodedToken.candidate_id}`,
           {
             method: "GET",
             headers: {
@@ -114,7 +114,7 @@ const Daftar = ({}) => {
     formData.append("job_id", id);
 
     try {
-      const response = await fetch("http://localhost:3000/cvs", {
+      const response = await fetch("https://dicoding-jobs-capstone-ry2qx4pc7a-et.a.run.app/cvs", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
