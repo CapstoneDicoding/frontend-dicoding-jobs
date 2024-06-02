@@ -38,6 +38,10 @@ export default function Index() {
         expires: 1,
         secure: process.env.NODE_ENV !== "development",
       });
+      Cookies.set("photo_path", data.photo_path, {
+        expires: 1,
+        secure: process.env.NODE_ENV !== "development",
+      });
       router.push("/jobs");
     } else if (res.status === 401) {
       setError("Username/password salah");
