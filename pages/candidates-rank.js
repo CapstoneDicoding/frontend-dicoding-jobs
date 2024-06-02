@@ -57,7 +57,7 @@ export default function CandidatesRank() {
       className={`flex flex-col gap-12 bg-white ${quicksand.className} pb-24 my-20 mx-10`}
     >
       <Navbar />
-      <Link href="/dashboard-perusahaan" className="flex items-center mb-2">
+      <Link href="/dashboard-company" className="flex items-center mb-2">
         <svg
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"

@@ -105,7 +105,7 @@ const Detail = ({ initialId }) => {
             <p className=" text-lg">Profil Pelamar</p>
             <div className="w-32 h-32 overflow-hidden rounded-full border-2 border-gray-300 relative">
               <Image
-                src="/asahi.jpeg"
+                src={data.candidate.user.photo_path}
                 alt="Profile Picture"
                 layout="fill"
                 objectFit="cover"
@@ -143,8 +143,10 @@ const Detail = ({ initialId }) => {
             <div className="grid grid-cols-[75%_25%]">
               <div className="mr-3">
                 <p className="font-semibold text-lg">Persyaratan Pekerjaan</p>
-                <div className="prose" dangerouslySetInnerHTML={{ __html: data.job.requirements }}>
-                </div>
+                <div
+                  className="prose"
+                  dangerouslySetInnerHTML={{ __html: data.job.requirements }}
+                ></div>
               </div>
               <div>
                 <div className="flex flex-col place-items-center border-solid border-4 border-mainColor rounded-2xl p-5 space-y-3 sticky top-[70px]">
@@ -158,7 +160,7 @@ const Detail = ({ initialId }) => {
             <div className="space-y-2">
               <p className="font-semibold text-lg">Ringkasan CV</p>
               <embed
-                src="/cv.pdf"
+                src={data.summarized_cv_path}
                 type="application/pdf"
                 className="w-full h-screen"
               />
