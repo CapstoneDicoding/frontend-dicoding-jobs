@@ -190,9 +190,10 @@ export default function CandidatesRank() {
             className={`flex flex-col mx-[105px] rounded-b-md px-8 py-4 bg-slate-200 border-t-2 border-gray-300 transition
              duration-1000 ease-in-out`}
           >
-            <div className="mr-3">
-              {jobsData.requirements}
-            </div>
+            <div
+                  className="prose"
+                  dangerouslySetInnerHTML={{ __html: jobsData.requirements }}
+                ></div>
           </div>
         )}
       </div>

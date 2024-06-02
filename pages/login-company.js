@@ -92,7 +92,7 @@ export default function Index() {
               </button>
             </form>
             <div className="flex justify-center items-center gap-2 mx-10">
-              <Link href={"/login-company"}>
+              <Link href={"/"}>
                 <button className="text-grey text-md font-medium">
                   Masuk Sebagai Pelamar
                 </button>
