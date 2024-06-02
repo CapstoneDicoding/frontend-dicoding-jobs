@@ -114,6 +114,7 @@ export default function CandidatesRank() {
                       id={job.id}
                       name={job.name}
                       companyName={job.company.user.fullname}
+                      companyPicture={job.company.user.photo_path}
                       companyLocation={job.company.location}
                       candidateApplied={job._count.curriculum_vitaes}
                     />

@@ -338,7 +338,7 @@ const Daftar = ({}) => {
                 </div>
               </div>
               <div className="flex flex-row gap-3 my-12 justify-end">
-                <Link href="/dashboard-pekerja">
+                <Link href="/jobs">
                   <button className="bg-logoGrey font-semibold text-mainColor px-12 py-2 rounded-sm">
                     Batal
                   </button>

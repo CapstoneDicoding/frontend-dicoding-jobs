@@ -6,6 +6,7 @@ export default function LowonganCard({
   id,
   name,
   companyName,
+  companyPicture,
   companyLocation,
   candidateNeeded,
 }) {
@@ -14,7 +15,7 @@ export default function LowonganCard({
       <div className="flex flex-1 space-x-8">
         <div className="flex flex-none w-[100px] items-center">
           <Image
-            src={"/favicon.ico"}
+            src={companyPicture}
             alt="Company Logo"
             width={100}
             height={100}
