@@ -111,6 +111,7 @@ const Daftar = ({}) => {
 
     const formData = new FormData();
     formData.append("cv", selectedFile);
+    formData.append("job_id", id);
 
     try {
       const response = await fetch("http://localhost:3000/cvs", {
@@ -123,6 +124,7 @@ const Daftar = ({}) => {
 
       if (response.ok) {
         alert("File berhasil diunggah");
+        router.push(`/jobs/${id}/apply/sent`);
       } else {
         alert("Gagal mengunggah file");
       }
@@ -159,7 +161,7 @@ const Daftar = ({}) => {
                   ></path>{" "}
                 </g>
               </svg>
-              <Link href="/dashboard-pekerja">
+              <Link href="/jobs">
                 <p className="text-white text-base">Kembali</p>
               </Link>
             </div>
@@ -341,14 +343,14 @@ const Daftar = ({}) => {
                     Batal
                   </button>
                 </Link>
-                <Link href={`/jobs/${id}/apply/sent`}>
+                <div href={`/jobs/${id}/apply/sent`}>
                   <button
                     className="bg-mainColor font-semibold text-white px-5 py-2 rounded-sm"
                     onClick={handleFileUpload}
                   >
                     Kirim Lamaran
                   </button>
-                </Link>
+                </div>
               </div>
             </div>
           </div>
