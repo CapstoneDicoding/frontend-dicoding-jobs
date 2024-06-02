@@ -13,6 +13,7 @@ const quicksand = Quicksand({
 function Navbar() {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const router = useRouter();
+  const photoPath = Cookies.get("photo_path");
 
   const handleProfileClick = () => {
     setIsPopoverOpen(!isPopoverOpen);
@@ -41,12 +42,14 @@ function Navbar() {
               className="flex items-center gap-2 cursor-pointer"
               onClick={handleProfileClick}
             >
-              <Image
-                src="/profil.png"
-                alt="icon-profil"
-                width={30}
-                height={0}
-              />
+              <div className="w-9 h-9 overflow-hidden rounded-full border-2 border-gray-300 relative">
+                    <Image
+                      src={photoPath}
+                      alt="Profile Picture"
+                      layout="fill"
+                      objectFit="cover"
+                    />
+                  </div>
               {isPopoverOpen ? <FaAngleUp /> : <FaAngleDown />}
             </div>
             {isPopoverOpen && (
