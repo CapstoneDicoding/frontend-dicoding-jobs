@@ -1,0 +1,1 @@
+export const BASE_API_URL = "https://dicoding-jobs-capstone-ry2qx4pc7a-et.a.run.app"

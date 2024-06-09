@@ -7,6 +7,7 @@ import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+import { BASE_API_URL } from '@/config';
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -84,16 +85,13 @@ const Daftar = ({}) => {
       console.log(id)
       console.log(token)
       try {
-        const res = await fetch(
-          `https://dicoding-jobs-capstone-ry2qx4pc7a-et.a.run.app/jobs/${id}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const res = await fetch(`${BASE_API_URL}/jobs/${id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         console.log("res: ", res);
 
@@ -110,7 +108,7 @@ const Daftar = ({}) => {
     async function fetchUserData() {
       try {
         const res = await fetch(
-          `https://dicoding-jobs-capstone-ry2qx4pc7a-et.a.run.app/candidates/${decodedToken.candidate_id}`,
+          `${BASE_API_URL}/candidates/${decodedToken.candidate_id}`,
           {
             method: "GET",
             headers: {
@@ -148,16 +146,13 @@ const Daftar = ({}) => {
     formData.append("job_id", id);
 
     try {
-      const response = await fetch(
-        "https://dicoding-jobs-capstone-ry2qx4pc7a-et.a.run.app/cvs",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        }
-      );
+      const response = await fetch(`${BASE_API_URL}/cvs`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
 
       if (response.ok) {
         alert("File berhasil diunggah");

@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import { Quicksand } from "@next/font/google";
 import Link from "next/link";
+import { BASE_API_URL } from '@/config';
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -19,7 +20,7 @@ export default function Index() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const res = await fetch("https://dicoding-jobs-capstone-ry2qx4pc7a-et.a.run.app/login", {
+    const res = await fetch(`${BASE_API_URL}/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

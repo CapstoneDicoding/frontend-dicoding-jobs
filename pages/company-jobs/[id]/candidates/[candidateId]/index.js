@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+import { BASE_API_URL } from '@/config';
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -53,7 +54,7 @@ const Detail = ({ initialId }) => {
 
     async function fetchData() {
       try {
-        const res = await fetch(`https://dicoding-jobs-capstone-ry2qx4pc7a-et.a.run.app/cvs/${idCv}`, {
+        const res = await fetch(`${BASE_API_URL}/cvs/${idCv}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

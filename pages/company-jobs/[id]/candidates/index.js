@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import Pagination from "@/components/pagination";
 import Link from "next/link";
 import Cookies from "js-cookie";
+import { BASE_API_URL } from '@/config';
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -57,7 +58,7 @@ export default function CandidatesRank() {
   useEffect(() => {
     setIsLoading(true);
     fetch(
-      `https://dicoding-jobs-capstone-ry2qx4pc7a-et.a.run.app/jobs/company/${jobId}?page=${page}&limit=${limit}`,
+      `${BASE_API_URL}/jobs/company/${jobId}?page=${page}&limit=${limit}`,
       {
         method: "GET",
         headers: {
