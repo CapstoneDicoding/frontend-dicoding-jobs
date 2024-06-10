@@ -12,7 +12,7 @@ const quicksand = Quicksand({
   weight: ["300", "500"],
 });
 
-export default function CandidatesRank() {
+export default function DashboardCandidate() {
   const [user, setUser] = useState(null);
   const router = useRouter();
   const { query } = useRouter();
@@ -44,7 +44,7 @@ export default function CandidatesRank() {
       Cookies.remove("role");
       router.push("/");
     }
-  }, []);
+  }, [router.query]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -65,7 +65,7 @@ export default function CandidatesRank() {
       .catch((error) => {
         console.error("Error:", error);
       });
-  }, [page, limit]);
+  }, [page, limit, router.query]);
 
   return (
     <main

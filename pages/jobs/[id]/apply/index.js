@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Quicksand } from "@next/font/google";
 import Navbar from "@/components/navbar";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
@@ -19,14 +19,42 @@ const Daftar = ({}) => {
   const [userData, setUserData] = useState(null);
   const token = Cookies.get("token");
   const role = Cookies.get("role");
-
-  const { query } = useRouter();
-  const { id } = query;
-
   const [selectedFile, setSelectedFile] = useState(null);
+  const [error, setError] = useState("");
+  const fileInputRef = useRef(null);
 
+  const { id } = router.query;
+  
   const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
+    const file = event.target.files[0];
+    const type = file.type;
+    const size = file.size;
+    
+    if (type !== "application/pdf") {
+      console.log("1");
+      setError(
+        "Hanya menerima file PDF dengan ukuran maksimal 5MB. Silakan unggah kembali."
+      );
+      setSelectedFile(null);
+      fileInputRef.current.value = null;
+      return;
+    }
+
+    if (size > 5 * 1024 * 1024) {
+      setError(
+        "Hanya menerima file PDF dengan ukuran maksimal 5MB. Silakan unggah kembali."
+      );
+      setSelectedFile(null);
+      fileInputRef.current.value = null;
+      return;
+    }
+
+    setSelectedFile(file);
+    setError("");
+  };
+
+  const handleButtonClick = () => {
+    fileInputRef.current.click();
   };
 
   useEffect(() => {
@@ -53,16 +81,21 @@ const Daftar = ({}) => {
     }
 
     async function fetchData() {
+      console.log(id)
+      console.log(token)
       try {
-        const res = await fetch(`https://dicoding-jobs-capstone-ry2qx4pc7a-et.a.run.app/jobs/${id}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await fetch(
+          `https://dicoding-jobs-capstone-ry2qx4pc7a-et.a.run.app/jobs/${id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-        console.log({ res });
+        console.log("res: ", res);
 
         if (res.ok) {
           const result = await res.json();
@@ -73,6 +106,7 @@ const Daftar = ({}) => {
         console.error("Fetch error:", error);
       }
     }
+    
     async function fetchUserData() {
       try {
         const res = await fetch(
@@ -94,10 +128,10 @@ const Daftar = ({}) => {
         console.error("Fetch user data error:", error);
       }
     }
-
+    
     fetchData();
     fetchUserData();
-  }, []);
+  }, [router.query]);
 
   if (!data || !userData) {
     return <div>Memuat data...</div>;
@@ -114,13 +148,16 @@ const Daftar = ({}) => {
     formData.append("job_id", id);
 
     try {
-      const response = await fetch("https://dicoding-jobs-capstone-ry2qx4pc7a-et.a.run.app/cvs", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
+      const response = await fetch(
+        "https://dicoding-jobs-capstone-ry2qx4pc7a-et.a.run.app/cvs",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
 
       if (response.ok) {
         alert("File berhasil diunggah");
@@ -332,8 +369,27 @@ const Daftar = ({}) => {
                         ></path>{" "}
                       </g>
                     </svg>
-                    <p>Unggah Berkas dalam Bentuk PDF (Maksimal 5 MB)</p>
-                    <input type="file" onChange={handleFileChange} />
+                    <p>Unggah Berkas dalam Format PDF (Maksimal 5MB).</p>
+                    <input
+                      type="file"
+                      onChange={handleFileChange}
+                      ref={fileInputRef}
+                      style={{ display: "none" }}
+                    />
+                    <button
+                      onClick={handleButtonClick}
+                      className="border-solid border-2 border-mainColor px-4 py-1 rounded hover:bg-mainColor hover:text-white"
+                    >
+                      Unggah File
+                    </button>
+                    <div>
+                      {selectedFile ? (
+                        <p>File yang dipilih: {selectedFile.name}</p>
+                      ) : (
+                        <p>Tidak ada file yang dipilih.</p>
+                      )}
+                    </div>
+                    {error && <p style={{ color: "red" }}>{error}</p>}
                   </div>
                 </div>
               </div>
@@ -345,8 +401,13 @@ const Daftar = ({}) => {
                 </Link>
                 <div href={`/jobs/${id}/apply/sent`}>
                   <button
-                    className="bg-mainColor font-semibold text-white px-5 py-2 rounded-sm"
+                    className={`${
+                      selectedFile
+                        ? "bg-mainColor font-medium text-white px-5 py-2 rounded-sm"
+                        : "bg-gray-300 font-medium text-white px-5 py-2 rounded-sm"
+                    }`}
                     onClick={handleFileUpload}
+                    disabled={!selectedFile}
                   >
                     Kirim Lamaran
                   </button>

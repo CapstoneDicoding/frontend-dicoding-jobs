@@ -48,7 +48,7 @@ export default function CandidatesRank() {
       Cookies.remove("role");
       router.push("/");
     }
-  }, []);
+  }, [router.query]);
 
   const toggleAccordion = () => {
     setIsAccordionOpen(!isAccordionOpen);
@@ -79,7 +79,7 @@ export default function CandidatesRank() {
       .catch((error) => {
         console.error("Error:", error);
       });
-  }, [page, limit]);
+  }, [page, limit, router.query]);
 
   return (
     <main
