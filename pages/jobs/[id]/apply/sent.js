@@ -97,7 +97,7 @@ export default function Sent() {
 
     fetchData();
     fetchUserData();
-  }, []);
+  }, [router.query]);
 
   if (!data || !userData) {
     return <div>Memuat data...</div>;

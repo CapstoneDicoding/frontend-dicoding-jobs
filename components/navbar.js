@@ -1,32 +1,34 @@
+"use client"
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { Quicksand } from "@next/font/google";
 import { useRouter } from "next/router";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa6";
-import Cookies from 'js-cookie'; 
+import Cookies from "js-cookie";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
   weight: ["300", "500"],
 });
 
-
 function Navbar() {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const router = useRouter();
 
-  const photo_path = Cookies.get("photo_path")
+  const photo_path = Cookies.get("photo_path");
 
   const handleProfileClick = () => {
     setIsPopoverOpen(!isPopoverOpen);
   };
 
   const handleLogout = () => {
-    Cookies.remove('token'); 
-    Cookies.remove('role');
-    Cookies.remove('photo_path');
-    router.push('/');
+    Cookies.remove("token");
+    Cookies.remove("role");
+    Cookies.remove("photo_path");
+    router.push("/");
   };
+
+  console.log("photoo: ", photo_path);
 
   return (
     <nav
@@ -45,20 +47,18 @@ function Navbar() {
               className="flex items-center gap-2 cursor-pointer"
               onClick={handleProfileClick}
             >
-              <div className="w-9 h-9 overflow-hidden rounded-full border-2 border-gray-300 relative">
-                    <Image
-                      src={photo_path}
-                      alt="Profile Picture"
-                      layout="fill"
-                      objectFit="cover"
-                    />
-                  </div>
+              <div className="w-9 h-9 overflow-hidden rounded-full border-2 border-gray-300">
+                <Image src={photo_path} alt="Profile Picture" width={100} height={100}/>
+              </div>
               {isPopoverOpen ? <FaAngleUp /> : <FaAngleDown />}
             </div>
             {isPopoverOpen && (
               <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-36 bg-white border border-gray-200 rounded-lg shadow-lg">
                 <div className="py-2">
-                  <div className="flex items-center justify-center hover:bg-gray-100" onClick={handleLogout}>
+                  <div
+                    className="flex items-center justify-center hover:bg-gray-100"
+                    onClick={handleLogout}
+                  >
                     <svg
                       width="20"
                       height="20"

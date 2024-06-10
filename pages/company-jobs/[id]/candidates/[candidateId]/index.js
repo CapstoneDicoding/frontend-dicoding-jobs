@@ -71,7 +71,7 @@ const Detail = ({ initialId }) => {
     }
 
     fetchData();
-  }, []);
+  }, [router.query]);
 
   if (!data) {
     return <div>Memuat data...</div>;
