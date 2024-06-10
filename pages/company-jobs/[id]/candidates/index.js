@@ -290,19 +290,25 @@ export default function CandidatesRank() {
               </div>
             </div>
           ) : (
-            jobsCandidateRankData.map((cv, idx) => (
-              <CandidatesRankCard
-                key={idx + 1}
-                id={cv.id}
-                job_id={jobId}
-                rank={idx + 1}
-                name={cv.candidate.user.fullname}
-                picture={cv.candidate.user.photo_path}
-                skills={cv.candidate.skills}
-                percentage={cv.accuracy}
-                isLast={idx === cv.length - 1}
-              />
-            ))
+            jobsCandidateRankData.length == 0 ? (
+              <div className='my-8'>
+                <p className='text-xl'>(Belum ada pelamar)</p>
+              </div>
+            ) : (
+              jobsCandidateRankData.map((cv, idx) => (
+                <CandidatesRankCard
+                  key={idx + 1}
+                  id={cv.id}
+                  job_id={jobId}
+                  rank={idx + 1}
+                  name={cv.candidate.user.fullname}
+                  picture={cv.candidate.user.photo_path}
+                  skills={cv.candidate.skills}
+                  percentage={cv.accuracy}
+                  isLast={idx === cv.length - 1}
+                />
+              ))
+            )
           )}
         </div>
         <Pagination
