@@ -23,6 +23,7 @@ const Daftar = ({}) => {
   const role = Cookies.get("role");
   const [selectedFile, setSelectedFile] = useState(null);
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef(null);
 
   const { id } = router.query;
@@ -33,6 +34,7 @@ const Daftar = ({}) => {
     const size = file.size;
 
     if (type !== "application/pdf") {
+      console.log("1");
       setError(
         "Hanya menerima file PDF dengan ukuran maksimal 5MB. Silakan unggah kembali."
       );
@@ -82,6 +84,8 @@ const Daftar = ({}) => {
     }
 
     async function fetchData() {
+      console.log(id);
+      console.log(token);
       try {
         const res = await fetch(`${BASE_API_URL}/jobs/${id}`, {
           method: "GET",
@@ -94,6 +98,7 @@ const Daftar = ({}) => {
         if (res.ok) {
           const result = await res.json();
           setData(result);
+          console.log(result);
         }
       } catch (error) {
         console.error("Fetch error:", error);
@@ -139,6 +144,8 @@ const Daftar = ({}) => {
       return;
     }
 
+    setIsLoading(true);
+
     const formData = new FormData();
     formData.append("cv", selectedFile);
     formData.append("job_id", id);
@@ -153,8 +160,10 @@ const Daftar = ({}) => {
       });
 
       if (response.ok) {
+        alert("File berhasil diunggah");
         router.push(`/jobs/${id}/apply/sent`);
       } else {
+        alert("Gagal mengunggah file");
         Swal.fire({
           icon: "error",
           title: "Gagal mengirim lamaran!",
@@ -168,6 +177,8 @@ const Daftar = ({}) => {
         title: "Terjadi kesalahan saat mengunggah file!",
         text: "Silahkan coba lagi",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -402,14 +413,14 @@ const Daftar = ({}) => {
                 <div href={`/jobs/${id}/apply/sent`}>
                   <button
                     className={`${
-                      selectedFile
+                      selectedFile && !isLoading
                         ? "bg-mainColor font-medium text-white px-5 py-2 rounded-sm"
                         : "bg-gray-300 font-medium text-white px-5 py-2 rounded-sm"
                     }`}
                     onClick={handleFileUpload}
-                    disabled={!selectedFile}
+                    disabled={!selectedFile || isLoading}
                   >
-                    Kirim Lamaran
+                    {isLoading ? "Loading..." : "Kirim Lamaran"}
                   </button>
                 </div>
               </div>

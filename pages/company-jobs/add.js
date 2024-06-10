@@ -7,8 +7,9 @@ import "react-quill/dist/quill.snow.css";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
-import Link from 'next/link';
-import { BASE_API_URL } from '@/config';
+import Link from "next/link";
+import { BASE_API_URL } from "@/config";
+import Navbar from "@/components/navbar";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -81,22 +82,7 @@ export default function AddJob() {
 
   return (
     <main className="bg-white">
-      <nav
-        className={`drop-shadow-lg bg-white ${quicksand.className} text-mainColor fixed top-0 left-0 right-0 z-50`}
-      >
-        <div className="flex justify-between mx-10">
-          <div className="flex items-center my-3 space-x-4">
-            <Image src="/logo.png" alt="logo" width={70} height={0} />
-            <Image src="/line1.png" alt="line1" width={3} height={0} />
-            <p>Lowongan Kerja</p>
-          </div>
-          <div className="flex items-center space-x-10">
-            <p>Dashboard</p>
-            <Image src="/profil.png" alt="icon-profil" width={30} height={0} />
-          </div>
-        </div>
-      </nav>
-
+      <Navbar />
       <section
         className={`mx-10 pt-[56px] ${quicksand.className} text-mainColor`}
       >

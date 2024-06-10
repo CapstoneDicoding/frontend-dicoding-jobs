@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import Navbar from "@/components/navbar";
 import Pagination from "@/components/pagination";
 import LowonganCard from "@/components/lowonganPekerja-card";
-import { BASE_API_URL } from '@/config';
+import { BASE_API_URL } from "@/config";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -32,22 +32,19 @@ export default function DashboardCandidate() {
       return;
     }
 
-    try {
-      if (loginRole !== "candidate") {
-        Cookies.remove("token");
-        Cookies.remove("role");
-        router.push("/");
-        return;
-      }
-      setUser({ role: loginRole });
-    } catch (error) {
+    if (loginRole !== "candidate") {
       Cookies.remove("token");
       Cookies.remove("role");
       router.push("/");
+      return;
     }
-  }, [router.query]);
+
+    setUser({ role: loginRole });
+  }, [token, loginRole, router]);
 
   useEffect(() => {
+    if (!token) return;
+
     setIsLoading(true);
     fetch(`${BASE_API_URL}/jobs?page=${page}&limit=${limit}`, {
       method: "GET",
@@ -66,7 +63,7 @@ export default function DashboardCandidate() {
       .catch((error) => {
         console.error("Error:", error);
       });
-  }, [page, limit, router.query]);
+  }, [page, limit, token]);
 
   return (
     <main
