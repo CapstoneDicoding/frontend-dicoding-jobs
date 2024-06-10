@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { Quicksand } from "@next/font/google";
@@ -16,6 +16,7 @@ function Navbar() {
   const router = useRouter();
 
   const photo_path = Cookies.get("photo_path");
+  const role = Cookies.get("role");
 
   const handleProfileClick = () => {
     setIsPopoverOpen(!isPopoverOpen);
@@ -28,7 +29,15 @@ function Navbar() {
     router.push("/");
   };
 
-  console.log("photoo: ", photo_path);
+  const handleDashboardClick = () => {
+    if (role === "candidate") {
+      router.push("/jobs");
+    } else if (role === "recruiter") {
+      router.push("/company-jobs");
+    } else {
+      router.push("/");
+    }
+  };
 
   return (
     <nav
@@ -41,14 +50,21 @@ function Navbar() {
           <p>Lowongan Kerja</p>
         </div>
         <div className="flex items-center space-x-10 relative me-4">
-          <p>Dashboard</p>
+          <p onClick={handleDashboardClick} className="cursor-pointer">
+            Dashboard
+          </p>
           <div className="relative">
             <div
               className="flex items-center gap-2 cursor-pointer"
               onClick={handleProfileClick}
             >
               <div className="w-9 h-9 overflow-hidden rounded-full border-2 border-gray-300">
-                <Image src={photo_path} alt="Profile Picture" width={100} height={100}/>
+                <Image
+                  src={photo_path}
+                  alt="Profile Picture"
+                  width={100}
+                  height={100}
+                />
               </div>
               {isPopoverOpen ? <FaAngleUp /> : <FaAngleDown />}
             </div>
