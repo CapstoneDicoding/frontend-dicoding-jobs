@@ -7,7 +7,8 @@ import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
-import { BASE_API_URL } from '@/config';
+import Swal from "sweetalert2";
+import { BASE_API_URL } from "@/config";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -25,14 +26,13 @@ const Daftar = ({}) => {
   const fileInputRef = useRef(null);
 
   const { id } = router.query;
-  
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     const type = file.type;
     const size = file.size;
-    
+
     if (type !== "application/pdf") {
-      console.log("1");
       setError(
         "Hanya menerima file PDF dengan ukuran maksimal 5MB. Silakan unggah kembali."
       );
@@ -82,8 +82,6 @@ const Daftar = ({}) => {
     }
 
     async function fetchData() {
-      console.log(id)
-      console.log(token)
       try {
         const res = await fetch(`${BASE_API_URL}/jobs/${id}`, {
           method: "GET",
@@ -93,18 +91,15 @@ const Daftar = ({}) => {
           },
         });
 
-        console.log("res: ", res);
-
         if (res.ok) {
           const result = await res.json();
           setData(result);
-          console.log(result);
         }
       } catch (error) {
         console.error("Fetch error:", error);
       }
     }
-    
+
     async function fetchUserData() {
       try {
         const res = await fetch(
@@ -126,7 +121,7 @@ const Daftar = ({}) => {
         console.error("Fetch user data error:", error);
       }
     }
-    
+
     fetchData();
     fetchUserData();
   }, [router.query]);
@@ -137,7 +132,10 @@ const Daftar = ({}) => {
 
   const handleFileUpload = async () => {
     if (!selectedFile) {
-      alert("Pilih file terlebih dahulu");
+      Swal.fire({
+        icon: "warning",
+        title: "Pilih file terlebih dahulu",
+      });
       return;
     }
 
@@ -155,14 +153,21 @@ const Daftar = ({}) => {
       });
 
       if (response.ok) {
-        alert("File berhasil diunggah");
         router.push(`/jobs/${id}/apply/sent`);
       } else {
-        alert("Gagal mengunggah file");
+        Swal.fire({
+          icon: "error",
+          title: "Gagal mengirim lamaran!",
+          text: "Terjadi kesalahan pada sistem. Silahkan coba lagi",
+        });
       }
     } catch (error) {
       console.error("Error uploading file:", error);
-      alert("Terjadi kesalahan saat mengunggah file");
+      Swal.fire({
+        icon: "error",
+        title: "Terjadi kesalahan saat mengunggah file!",
+        text: "Silahkan coba lagi",
+      });
     }
   };
 
