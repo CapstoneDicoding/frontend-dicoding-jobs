@@ -6,6 +6,7 @@ import Navbar from "@/components/navbar";
 import Pagination from "@/components/pagination";
 import LowonganPerusahaanCard from "@/components/lowonganPerusahaan-card";
 import Link from "next/link";
+import { BASE_API_URL } from '@/config';
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -46,7 +47,7 @@ export default function DashboardRecruiter() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`https://dicoding-jobs-capstone-ry2qx4pc7a-et.a.run.app/jobs/company?page=${page}&limit=${limit}`, {
+    fetch(`${BASE_API_URL}/jobs/company?page=${page}&limit=${limit}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,

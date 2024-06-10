@@ -9,6 +9,8 @@ import { useRouter } from "next/router";
 import Pagination from "@/components/pagination";
 import Link from "next/link";
 import Cookies from "js-cookie";
+import Swal from 'sweetalert2'
+import { BASE_API_URL } from "@/config";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -56,30 +58,55 @@ export default function CandidatesRank() {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(
-      `https://dicoding-jobs-capstone-ry2qx4pc7a-et.a.run.app/jobs/company/${jobId}?page=${page}&limit=${limit}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
+    fetch(`${BASE_API_URL}/jobs/company/${jobId}?page=${page}&limit=${limit}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then((response) => {
         return response.json();
       })
       .then((data) => {
-        console.log(data.data);
         setJobsData(data.data.job);
         setJobsCandidateRankData(data.data.job.cvs);
         setTotalPages(data.data.pagination.totalPages);
         setIsLoading(false);
-        console.log(jobsData);
       })
       .catch((error) => {
         console.error("Error:", error);
       });
   }, [page, limit, router.query]);
+
+  const onDelete = () => {
+    Swal.fire({
+      title: "Yakin ingin menghapus lowongan pekerjaan ini?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Hapus",
+      cancelButtonText: "Batal",
+      confirmButtonColor: "#dd3333",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`${BASE_API_URL}/jobs/${jobId}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then(() => {
+            router.push("/company-jobs");
+          })
+          .catch(() => {
+            Swal.fire({
+              title: "Deleted!",
+              text: "Lowongan pekerjaan gagal dihapus",
+              icon: "error"
+            });
+          });
+      }
+    });
+  }
 
   return (
     <main
@@ -200,6 +227,19 @@ export default function CandidatesRank() {
               </div>
             </div>
           </div>
+          <div
+            onClick={() => onDelete()}
+            className="flex items-center justify-center space-x-1 bg-redColor h-12 p-4 rounded ml-auto cursor-pointer"
+          >
+            <p className="font-medium text-lg text-white">Hapus</p>
+            <Image
+              className="fill-white"
+              src="/remove-icon.png"
+              alt="icon-detail"
+              width={26}
+              height={0}
+            ></Image>
+          </div>
         </div>
       )}
       <div className="flex flex-col">
@@ -250,19 +290,25 @@ export default function CandidatesRank() {
               </div>
             </div>
           ) : (
-            jobsCandidateRankData.map((cv, idx) => (
-              <CandidatesRankCard
-                key={idx + 1}
-                id={cv.id}
-                job_id={jobId}
-                rank={idx + 1}
-                name={cv.candidate.user.fullname}
-                picture={cv.candidate.user.photo_path}
-                skills={cv.candidate.skills}
-                percentage={cv.accuracy}
-                isLast={idx === cv.length - 1}
-              />
-            ))
+            jobsCandidateRankData.length == 0 ? (
+              <div className='my-8'>
+                <p className='text-xl'>(Belum ada pelamar)</p>
+              </div>
+            ) : (
+              jobsCandidateRankData.map((cv, idx) => (
+                <CandidatesRankCard
+                  key={idx + 1}
+                  id={cv.id}
+                  job_id={jobId}
+                  rank={idx + 1}
+                  name={cv.candidate.user.fullname}
+                  picture={cv.candidate.user.photo_path}
+                  skills={cv.candidate.skills}
+                  percentage={cv.accuracy}
+                  isLast={idx === cv.length - 1}
+                />
+              ))
+            )
           )}
         </div>
         <Pagination
