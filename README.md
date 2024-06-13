@@ -1,40 +1,116 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Dicoding Jobs Capstone Frontend
+This project is a web application built using JavaScript, Next.js, and Tailwind CSS. It leverages the power of Google Cloud Run for deployment, ensuring a scalable and reliable infrastructure. The project also utilizes Docker for containerization and Git for version control.
 
-## Getting Started
+## Table of Contents
 
-First, run the development server:
+1. [Prerequisites](#prerequisites)
+2. [Libraries](#libraries)
+3. [Tools](#tools)
+4. [Installation](#installation)
+5. [Configuration](#configuration)
+6. [Running the Application](#running-the-application)
+7. [Docker Setup](#docker-setup)
+8. [Deployment](#deployment)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Prerequisites
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Before you begin, ensure you have the following installed on your machine:
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+- [Node.js](https://nodejs.org/) (v18 or higher)
+- [npm](https://www.npmjs.com/)
+- [Docker](https://www.docker.com/)
+- [Git](https://git-scm.com/)
+- [Google Cloud SDK](https://cloud.google.com/sdk)
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+And also ensrue you have deployed the backend service:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- [Dicoding Jobs Capstone Backend API](https://github.com/CapstoneDicoding/backend-capstone-dicoding)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Libraries
 
-## Learn More
+These are main libraries that are used to create the frontend service
 
-To learn more about Next.js, take a look at the following resources:
+- [Next.Js](https://nextjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Tools
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- **Git:** Version control system.
+- **Docker:** Containerization platform.
+- **Google Cloud SDK:** CLI tools for interacting with Google Cloud services.
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Installation
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. **Clone the repository:**
+
+    ```sh
+    git clone https://github.com/CapstoneDicoding/frontend-dicoding-jobs
+    cd frontend-dicoding-jobs
+    ```
+
+2. **Install dependencies:**
+
+    ```sh
+    npm install
+    ```
+
+## Configuration
+
+**Update Backend url**
+
+Update variable `BASE_API_URL` in `config/index.js` file with your backend service url.
+
+
+## Running the Application
+
+
+1. **Start the application:**
+
+    ```sh
+    npm run build
+    npm run start
+    ```
+2. **Development Mode:**
+
+    ```sh
+    npm run dev
+    ```
+
+## Docker Setup
+
+1. **Build the Docker image:**
+
+    ```sh
+    docker build -t your-app-name .
+    ```
+
+2. **Run the Docker container:**
+
+    ```sh
+    docker run -p 3000:3000 your-app-name
+    ```
+
+## Deployment
+
+### Cloud Run
+
+1. **Create new Arifacts repository**
+    ```sh
+    gcloud artifacts repositories create your-repository-name --repository-format=docker --location=asia-southeast2 --async
+    ```
+
+2. **Build and push your Docker image to Google Container Registry:**
+
+    ```sh
+    gcloud builds submit --tag asia-southeast2-docker.pkg.dev/your-project-id/your-repository-name/your-app-name:tag
+    ```
+
+3. **Deploy to Cloud Run:**
+
+    ```sh
+    gcloud run deploy --image asia-southeast2-docker.pkg.dev/your-project-id/your-repository-name/your-app-name:tag
+    ```
+
+    Follow the prompts to set the region and allow unauthenticated invocations if required.
+
