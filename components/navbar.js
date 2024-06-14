@@ -70,7 +70,7 @@ function Navbar() {
             </div>
             {isPopoverOpen && (
               <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-36 bg-white border border-gray-200 rounded-lg shadow-lg">
-                <div className="py-2">
+                <div className="py-2 cursor-pointer">
                   <div
                     className="flex items-center justify-center hover:bg-gray-100"
                     onClick={handleLogout}
